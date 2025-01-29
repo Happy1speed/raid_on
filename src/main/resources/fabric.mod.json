@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"id": "raid_on",
+	"version": "${version}",
+	"name": "Raid On",
+	"description": "Overhauls Raids to Scale more and be harder",
+	"authors": [
+		"Happy1speed"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/raid_on/icon.png",
+	"environment": "*",
+	"accessWidener" : "raid_on.accesswidener",
+	"entrypoints": {
+		"main": [
+			"net.happyspeed.raid_on.RaidonMod"
+		],
+		"client": [
+			"net.happyspeed.raid_on.RaidonModClient"
+		]
+	},
+	"mixins": [
+		"raid_on.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.8",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

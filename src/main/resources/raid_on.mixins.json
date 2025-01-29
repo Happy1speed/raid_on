@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "net.happyspeed.raid_on.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "CrossbowUserMixin",
+    "PillagerMixin",
+    "RaiderEntityMixin",
+    "RaidMixin",
+    "WitchEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}

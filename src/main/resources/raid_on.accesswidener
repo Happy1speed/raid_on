@@ -1,0 +1,5 @@
+accessWidener	v1	named
+accessible class net/minecraft/village/raid/Raid$Member
+accessible field net/minecraft/village/raid/Raid$Member countInWave [I
+accessible class net/minecraft/entity/ai/goal/CrossbowAttackGoal$Stage
+accessible field net/minecraft/village/raid/Raid waveCount I
