@@ -1,6 +1,7 @@
 package net.happyspeed.raid_on.mixin;
 
 import net.happyspeed.raid_on.RaidonMod;
+import net.happyspeed.raid_on.config.ModConfigs;
 import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -16,10 +17,7 @@ import net.minecraft.village.raid.Raid;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -46,6 +44,8 @@ public abstract class RaidMixin {
     @Shadow @Final private Random random;
 
     @Shadow public abstract int getMaxWaves(Difficulty difficulty);
+
+    @Shadow protected abstract boolean hasExtraWave();
 
     @Inject(method = "getMaxWaves", at=@At(value = "HEAD"), cancellable = true)
     public void waveLevelsScaleWavesMixin(Difficulty difficulty, CallbackInfoReturnable<Integer> cir) {
@@ -89,10 +89,20 @@ public abstract class RaidMixin {
     public void raiderEffectsScale(int wave, RaiderEntity entity, boolean countHealth, CallbackInfoReturnable<Boolean> cir) {
         if (wave > 9) {
             if (entity instanceof VindicatorEntity) {
-                entity.setStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, StatusEffectInstance.INFINITE, 0, false, false), entity);
+                if (ModConfigs.SCALESTATUSEFFECTS) {
+                    entity.setStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, StatusEffectInstance.INFINITE, (int) (wave * 0.4f), false, false), entity);
+                }
+                else {
+                    entity.setStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, StatusEffectInstance.INFINITE, 0, false, false), entity);
+                }
             }
             else if (entity instanceof PillagerEntity) {
-                entity.setStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, StatusEffectInstance.INFINITE, 2, false, false), entity);
+                if (ModConfigs.SCALESTATUSEFFECTS) {
+                    entity.setStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, StatusEffectInstance.INFINITE, (int) Math.min(wave * 0.5f, 5), false, false), entity);
+                }
+                else {
+                    entity.setStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, StatusEffectInstance.INFINITE, 0, false, false), entity);
+                }
             }
             else if (entity instanceof EvokerEntity) {
                 entity.setStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, StatusEffectInstance.INFINITE, 6, false, false), entity);
@@ -100,8 +110,15 @@ public abstract class RaidMixin {
             else if (entity instanceof RavagerEntity) {
                 entity.setStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, StatusEffectInstance.INFINITE, 1, false, false), entity);
             }
-            entity.setStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, StatusEffectInstance.INFINITE, 1, false, false), entity);
-            entity.setStatusEffect(new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 40, 6, false, false), entity);
+            if (ModConfigs.SCALESTATUSEFFECTS) {
+                entity.setStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, StatusEffectInstance.INFINITE, (int) (wave * 0.2f) + 1, false, false), entity);
+                entity.setStatusEffect(new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 40, 6, false, false), entity);
+            }
+            else {
+                entity.setStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, StatusEffectInstance.INFINITE, 1, false, false), entity);
+                entity.setStatusEffect(new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 40, 6, false, false), entity);
+            }
+
             if (this.random.nextBetween(1, 4) < 2 && wave % 10 == 0) {
                 entity.setStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, StatusEffectInstance.INFINITE, 1, false, false), entity);
             }
@@ -113,8 +130,8 @@ public abstract class RaidMixin {
     public void getMoreRaiders(Raid.Member member, Random random, int wave, LocalDifficulty localDifficulty, boolean extra, CallbackInfoReturnable<Integer> cir) {
         int i = 0;
 
-        if (this.wavesSpawned + 1 > 6) {
-            i = (int) (this.wavesSpawned * 0.2f);
+        if (this.wavesSpawned > 5) {
+            i = (int) (this.wavesSpawned * (float) (ModConfigs.RAIDWAVESCALEAMOUNT));
             Difficulty difficulty = localDifficulty.getGlobalDifficulty();
             boolean bl = difficulty == Difficulty.EASY;
             switch (member) {

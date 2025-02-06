@@ -5,6 +5,7 @@
   "mixins": [
     "CrossbowUserMixin",
     "PillagerMixin",
+    "PlayerEntityMixin",
     "RaiderEntityMixin",
     "RaidMixin",
     "WitchEntityMixin"

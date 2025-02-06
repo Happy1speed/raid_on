@@ -2,6 +2,7 @@ package net.happyspeed.raid_on;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.happyspeed.raid_on.config.ModConfigs;
 import net.happyspeed.raid_on.item.ModItemGroups;
 import net.happyspeed.raid_on.item.ModItems;
 import net.happyspeed.raid_on.status_effects.RaidWaveLootEffect;
@@ -24,6 +25,8 @@ public class RaidonMod implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Raid on my bros!");
+
+		ModConfigs.registerConfigs();
 
 		Registry.register(Registries.STATUS_EFFECT, new Identifier("raid_on", "raid_wave_loot_effect"), RAID_WAVE_LOOT_EFFECT);
 

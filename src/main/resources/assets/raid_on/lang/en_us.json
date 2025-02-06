@@ -4,10 +4,10 @@
   "item.raid_on.prism_of_sight": "Prism Of Sight",
   "item.raid_on.bottle_o_omen": "Bottle O' Omen",
   "item.raid_on.raid_stone": "Raid Stone",
-  "message.raid_on.bad_omen_worse": "Your bad omen has become worse",
+  "message.raid_on.bad_omen_worse": "Your bad omen has worsened",
   "message.raid_on.locating_raiders": "Highlighting possible raiders nearby...",
-  "message.raid_on.wavescount": "Total Raid Wave Count = ",
-  "message.raid_on.currentraidercount": "Current Spawned Raider Amount = ",
+  "message.raid_on.wavescount": "Raid Wave Count = ",
+  "message.raid_on.currentraidercount": "Current Raiders = ",
   "message.raid_on.notinraidarea": "You are not in a raid area",
-  "message.raid_on.possible_extra_wave": "1 possible extra wave."
+  "effect.raid_on.raid_wave_loot_effect": "Raid Wave Loot Level"
 }

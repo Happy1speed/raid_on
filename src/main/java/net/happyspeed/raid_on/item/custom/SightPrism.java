@@ -1,6 +1,7 @@
 package net.happyspeed.raid_on.item.custom;
 
 import com.google.common.collect.Sets;
+import net.happyspeed.raid_on.mixin.PlayerEntityMixin;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
@@ -36,19 +37,19 @@ public class SightPrism extends Item {
         super(settings);
     }
 
-    @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if(!user.getWorld().isClient()) {
-            user.sendMessage(Text.translatable("message.raid_on.locating_raiders").formatted(Formatting.GRAY).formatted(Formatting.ITALIC),true);
-            if (user.getWorld() instanceof ServerWorld serverWorld) {
-                Raid raid = serverWorld.getRaidAt(user.getBlockPos());
-                if (raid != null) {
-                    for (RaiderEntity raider : raid.getAllRaiders()) {
-                        raider.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 100, 1), user);
+    public void activeAbility(World world, LivingEntity user) {
+        if (user instanceof PlayerEntity player) {
+            if (!player.getWorld().isClient()) {
+                player.sendMessage(Text.translatable("message.raid_on.locating_raiders").formatted(Formatting.GRAY).formatted(Formatting.ITALIC), true);
+                if (player.getWorld() instanceof ServerWorld serverWorld) {
+                    Raid raid = serverWorld.getRaidAt(player.getBlockPos());
+                    if (raid != null) {
+                        for (RaiderEntity raider : raid.getAllRaiders()) {
+                            raider.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 10, 1), player);
+                        }
                     }
                 }
             }
         }
-        return TypedActionResult.success(user.getStackInHand(hand));
     }
 }

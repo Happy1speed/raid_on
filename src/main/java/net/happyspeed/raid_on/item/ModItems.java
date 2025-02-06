@@ -22,7 +22,7 @@ public class ModItems {
             new SightPrism(new FabricItemSettings().maxCount(1)));
 
     public static final Item BOTTLEOOMEN = registerItem("bottle_o_omen",
-            new OmenUp(new FabricItemSettings().maxCount(16)));
+            new OmenUp(new FabricItemSettings().maxCount(64)));
 
     public static final Item RAID_STONE = registerItem("raid_stone",
             new RaidOMeter(new FabricItemSettings().maxCount(1)));
