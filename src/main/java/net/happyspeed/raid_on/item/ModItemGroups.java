@@ -16,7 +16,7 @@ public class ModItemGroups {
                     .icon(() -> new ItemStack(ModItems.PRISMOFSIGHT)).entries((displayContext, entries) -> {
                         entries.add(ModItems.PRISMOFSIGHT);
                         entries.add(ModItems.BOTTLEOOMEN);
-                        entries.add(ModItems.RAID_STONE);
+                        entries.add(ModItems.RAID_RUNE);
 
                     }).build());
 

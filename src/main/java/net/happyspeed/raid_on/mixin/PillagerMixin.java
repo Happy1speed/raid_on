@@ -1,7 +1,10 @@
 package net.happyspeed.raid_on.mixin;
 
 import com.google.common.collect.Lists;
+import net.happyspeed.raid_on.config.ModConfigs;
 import net.minecraft.client.particle.FireworksSparkParticle;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.mob.IllagerEntity;
@@ -11,9 +14,11 @@ import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.entity.projectile.FireworkRocketEntity;
+import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.FireworkRocketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.loot.LootTable;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.recipe.FireworkRocketRecipe;
@@ -42,21 +47,22 @@ public abstract class PillagerMixin extends IllagerEntity
         super(entityType, world);
     }
 
+
     @Inject(method = "initEquipment", at=@At(value = "HEAD"), cancellable = true)
     public void fireworkRandomize(Random random, LocalDifficulty localDifficulty, CallbackInfo ci) {
-        if (random.nextBetween(1, 10) > 9) {
+        if (random.nextBetween(1, ModConfigs.PILLAGERFIREWORKSCHANCE) == 1 && ModConfigs.PILLAGERSFIREWORKSENABLED) {
             int flight = random.nextBetween(1, 3);
             ItemStack itemStack = new ItemStack(Items.FIREWORK_ROCKET, 64);
 
             int howMany = random.nextBetween(1, 4);
             int howManyStars = random.nextBetween(1, 3);
             if (this.getWave() > 20) {
-                howMany += 2;
-                howManyStars += 1;
-            }
-            if (this.getWave() > 30) {
-                howMany += 2;
+                howMany += 1;
                 howManyStars += 2;
+            }
+            if (this.getWave() > 40) {
+                howMany += 1;
+                howManyStars += 1;
             }
             NbtList nbtList = new NbtList();
             NbtCompound nbtCompound2first = itemStack.getOrCreateSubNbt("Fireworks");

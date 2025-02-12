@@ -37,6 +37,7 @@ public class SightPrism extends Item {
         super(settings);
     }
 
+
     public void activeAbility(World world, LivingEntity user) {
         if (user instanceof PlayerEntity player) {
             if (!player.getWorld().isClient()) {
@@ -45,7 +46,7 @@ public class SightPrism extends Item {
                     Raid raid = serverWorld.getRaidAt(player.getBlockPos());
                     if (raid != null) {
                         for (RaiderEntity raider : raid.getAllRaiders()) {
-                            raider.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 10, 1), player);
+                            raider.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 5, 1, false, false), player);
                         }
                     }
                 }

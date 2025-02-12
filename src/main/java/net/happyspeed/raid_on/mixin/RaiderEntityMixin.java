@@ -1,8 +1,10 @@
 package net.happyspeed.raid_on.mixin;
 
 
+import net.happyspeed.raid_on.config.ModConfigs;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.mob.EvokerEntity;
 import net.minecraft.entity.mob.PatrolEntity;
 import net.minecraft.entity.raid.RaiderEntity;
 import net.minecraft.registry.tag.DamageTypeTags;
@@ -20,13 +22,15 @@ public abstract class RaiderEntityMixin extends PatrolEntity {
     }
 
     protected float modifyAppliedDamage(DamageSource source, float amount) {
-        amount = super.modifyAppliedDamage(source, amount);
-        if (source.getAttacker() == this) {
-            amount = 0.0F;
-        }
+        if (ModConfigs.NORAIDERFRIENDLYFIRE) {
+            amount = super.modifyAppliedDamage(source, amount);
+            if (source.getAttacker() == this) {
+                amount = 0.0F;
+            }
 
-        if (source.getAttacker() instanceof RaiderEntity) {
-            amount = 0.0F;
+            if (source.getAttacker() instanceof RaiderEntity) {
+                amount = 0.0F;
+            }
         }
 
         return amount;

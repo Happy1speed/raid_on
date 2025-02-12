@@ -26,8 +26,13 @@ import java.util.List;
 import java.util.Objects;
 
 public class OmenUp extends Item {
+
     public OmenUp(Settings settings) {
         super(settings);
+    }
+
+    public boolean hasGlint(ItemStack stack) {
+        return true;
     }
 
     @Override

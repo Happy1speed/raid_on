@@ -68,7 +68,7 @@ public abstract class RaidMixin {
             this.waveCount = 99999999;
         }
         else {
-            this.waveCount = (int) (((this.badOmenLevel + 1) * 1.2) + 2);
+            this.waveCount = (int) (((this.badOmenLevel + 1) * (float) ModConfigs.TOTALWAVESCALEFACTOR) + 1) + 2;
         }
     }
 
@@ -223,32 +223,32 @@ public abstract class RaidMixin {
 
     @ModifyConstant(method = "tick", constant = @Constant(intValue = 300, ordinal = 0))
     private int modifyraidtime2(int constant) {
-        return this.wavesSpawned > 5 ? 20 : 300;
+        return this.wavesSpawned > 5 ? ModConfigs.FASTWAVETIMER : ModConfigs.SLOWWAVETIMER;
     }
 
     @ModifyConstant(method = "tick", constant = @Constant(intValue = 100, ordinal = 0))
     private int modifyraidtime3(int constant) {
-        return this.wavesSpawned > 5 ? 10 : 100;
+        return this.wavesSpawned > 5 ? (int) (ModConfigs.FASTWAVETIMER * 0.3f) : (int) (ModConfigs.SLOWWAVETIMER * 0.3f);
     }
 
     @ModifyConstant(method = "tick", constant = @Constant(intValue = 40, ordinal = 0))
     private int modifyraidtime4(int constant) {
-        return this.wavesSpawned > 5 ? 4 : 40;
+        return this.wavesSpawned > 5 ? (int) (ModConfigs.FASTWAVETIMER * 0.13f) : (int) (ModConfigs.SLOWWAVETIMER * 0.13f);
     }
 
     @ModifyConstant(method = "tick", constant = @Constant(intValue = 300, ordinal = 1))
     private int modifyraidtime5(int constant) {
-        return this.wavesSpawned > 5 ? 20 : 300;
+        return this.wavesSpawned > 5 ? ModConfigs.FASTWAVETIMER : ModConfigs.SLOWWAVETIMER;
     }
 
     @ModifyConstant(method = "tick", constant = @Constant(intValue = 300, ordinal = 2))
     private int modifyraidtime6(int constant) {
-        return this.wavesSpawned > 5 ? 20 : 300;
+        return this.wavesSpawned > 5 ? ModConfigs.FASTWAVETIMER : ModConfigs.SLOWWAVETIMER;
     }
 
     @ModifyConstant(method = "tick", constant = @Constant(floatValue = 300f, ordinal = 0))
     private float modifyraidtime7(float constant) {
-        return this.wavesSpawned > 5 ? 20f : 300f;
+        return this.wavesSpawned > 5 ? (float) ModConfigs.FASTWAVETIMER : (float) ModConfigs.SLOWWAVETIMER;
     }
 
     @ModifyConstant(method = "tick", constant = @Constant(longValue = 48000L, ordinal = 0))

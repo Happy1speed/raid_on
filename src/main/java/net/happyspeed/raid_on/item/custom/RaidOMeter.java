@@ -35,7 +35,7 @@ public class RaidOMeter extends Item {
                 if (user.getWorld() instanceof ServerWorld serverWorld) {
                     Raid raid = serverWorld.getRaidAt(user.getBlockPos());
                     if (raid != null) {
-                        user.sendMessage(Text.translatable("message.raid_on.wavescount").formatted(Formatting.DARK_PURPLE).formatted(Formatting.ITALIC).append(String.valueOf(raid.waveCount + (raid.hasExtraWave() ? 1 : 0))).append(" | ").append(Text.translatable("message.raid_on.currentraidercount").append(String.valueOf(raid.getRaiderCount())).formatted(Formatting.DARK_GREEN).formatted(Formatting.ITALIC)), true);
+                        user.sendMessage(Text.translatable("message.raid_on.wavescount").formatted(Formatting.DARK_GREEN).formatted(Formatting.UNDERLINE).append(String.valueOf(raid.waveCount + (raid.hasExtraWave() ? 1 : 0))).append(Text.literal(" | ").formatted(Formatting.GRAY)).append(Text.translatable("message.raid_on.currentraidercount").append(String.valueOf(raid.getRaiderCount())).formatted(Formatting.DARK_AQUA).formatted(Formatting.UNDERLINE)), true);
                     }
                     else {
                         user.sendMessage(Text.translatable("message.raid_on.notinraidarea").formatted(Formatting.YELLOW).formatted(Formatting.ITALIC), true);

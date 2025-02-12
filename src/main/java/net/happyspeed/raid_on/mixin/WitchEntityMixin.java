@@ -1,6 +1,7 @@
 package net.happyspeed.raid_on.mixin;
 
 
+import com.llamalad7.mixinextras.sugar.Local;
 import net.happyspeed.raid_on.config.ModConfigs;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -43,10 +44,19 @@ public abstract class WitchEntityMixin extends RaiderEntity {
     }
 
     @Redirect(method = "attack", at= @At(value = "INVOKE", target = "Lnet/minecraft/potion/PotionUtil;setPotion(Lnet/minecraft/item/ItemStack;Lnet/minecraft/potion/Potion;)Lnet/minecraft/item/ItemStack;"))
-    private ItemStack redirectLingering(ItemStack stack, Potion potion) {
-        if (this.hasActiveRaid() && !(this.getTarget() instanceof RaiderEntity) && !this.isDrinking()) {
-            if (this.random.nextBetween(1, 5) == 1) {
-                return PotionUtil.setPotion(new ItemStack(Items.LINGERING_POTION), potion);
+    private ItemStack redirectLingering(ItemStack stack, Potion potion, @Local(ordinal = 0, argsOnly = true) LivingEntity target) {
+        if (ModConfigs.WITCHESCANTHROWLINGERINGENABLED) {
+            if (this.hasActiveRaid() && !(target instanceof RaiderEntity) && !this.isDrinking()) {
+                if (this.raid != null && this.raid.waveCount > 30 && potion == Potions.HARMING) {
+                    potion = Potions.STRONG_HARMING;
+                } else if (this.raid != null && this.raid.waveCount > 30 && potion == Potions.POISON) {
+                    potion = Potions.LONG_POISON;
+                }
+
+                if (this.random.nextBetween(1, 5) == 1) {
+                    return PotionUtil.setPotion(new ItemStack(Items.LINGERING_POTION), potion);
+                }
+
             }
         }
         stack = PotionUtil.setPotion(new ItemStack(Items.SPLASH_POTION), potion);

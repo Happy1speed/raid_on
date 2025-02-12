@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "raid_on:item/raid_stone"
+    "layer0": "raid_on:item/raid_rune"
   }
 }

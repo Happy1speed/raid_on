@@ -4,3 +4,5 @@ accessible field net/minecraft/village/raid/Raid$Member countInWave [I
 accessible class net/minecraft/entity/ai/goal/CrossbowAttackGoal$Stage
 accessible field net/minecraft/village/raid/Raid waveCount I
 accessible method net/minecraft/village/raid/Raid hasExtraWave ()Z
+accessible class net/minecraft/entity/mob/SpellcastingIllagerEntity$CastSpellGoal
+accessible field net/minecraft/village/raid/Raid wavesSpawned I
