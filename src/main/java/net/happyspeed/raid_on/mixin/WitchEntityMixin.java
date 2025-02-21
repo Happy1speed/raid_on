@@ -46,15 +46,27 @@ public abstract class WitchEntityMixin extends RaiderEntity {
     @Redirect(method = "attack", at= @At(value = "INVOKE", target = "Lnet/minecraft/potion/PotionUtil;setPotion(Lnet/minecraft/item/ItemStack;Lnet/minecraft/potion/Potion;)Lnet/minecraft/item/ItemStack;"))
     private ItemStack redirectLingering(ItemStack stack, Potion potion, @Local(ordinal = 0, argsOnly = true) LivingEntity target) {
         if (ModConfigs.WITCHESCANTHROWLINGERINGENABLED) {
-            if (this.hasActiveRaid() && !(target instanceof RaiderEntity) && !this.isDrinking()) {
-                if (this.raid != null && this.raid.waveCount > 30 && potion == Potions.HARMING) {
-                    potion = Potions.STRONG_HARMING;
-                } else if (this.raid != null && this.raid.waveCount > 30 && potion == Potions.POISON) {
-                    potion = Potions.LONG_POISON;
-                }
+            if (this.hasActiveRaid() && !this.isDrinking()) {
+                if (!(target instanceof RaiderEntity)) {
+                    if (this.raid != null && this.raid.waveCount > 30 && potion == Potions.HARMING) {
+                        potion = Potions.STRONG_HARMING;
+                    } else if (this.raid != null && this.raid.waveCount > 30 && potion == Potions.POISON) {
+                        potion = Potions.LONG_POISON;
+                    }
 
-                if (this.random.nextBetween(1, 5) == 1) {
-                    return PotionUtil.setPotion(new ItemStack(Items.LINGERING_POTION), potion);
+                    if (this.random.nextBetween(1, 5) == 1) {
+                        return PotionUtil.setPotion(new ItemStack(Items.LINGERING_POTION), potion);
+                    }
+                }
+                else {
+                    if (this.raid != null && this.raid.waveCount > 30) {
+                        if (this.random.nextBetween(1, 15) == 1 && !target.hasStatusEffect(StatusEffects.SPEED)) {
+                            potion = Potions.STRONG_SWIFTNESS;
+                        }
+                        else if (this.random.nextBetween(1, 15) == 2 && !target.hasStatusEffect(StatusEffects.JUMP_BOOST)) {
+                            potion = Potions.STRONG_LEAPING;
+                        }
+                    }
                 }
 
             }

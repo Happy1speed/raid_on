@@ -18,6 +18,9 @@ public class ModConfigs {
     public static boolean VEXESPERISHWITHEVOKERSENABLED;
     public static boolean WITCHESCANTHROWLINGERINGENABLED;
     public static boolean NORAIDERFRIENDLYFIRE;
+    public static int MAXOMENLEVELCOMMANDS;
+    public static int MAXOMENLEVELNATURAL;
+    public static boolean HEALTHSTATUSEFFECTS;
 
     public static void registerConfigs() {
         configs = new ModConfigProvider();
@@ -30,6 +33,7 @@ public class ModConfigs {
 
     private static void createConfigs() {
         configs.addKeyValuePair(new Pair<>("scale_status_effects", false));
+        configs.addKeyValuePair(new Pair<>("health_status_effects", true));
         configs.addKeyValuePair(new Pair<>("active_witches", true));
         configs.addKeyValuePair(new Pair<>("raiders_in_wave_scale_amount", 0.2));
         configs.addKeyValuePair(new Pair<>("total_wave_scale_factor", 1.2));
@@ -40,11 +44,14 @@ public class ModConfigs {
         configs.addKeyValuePair(new Pair<>("vexes_perish_with_evokers_enabled", true));
         configs.addKeyValuePair(new Pair<>("witches_can_throw_lingering_enabled", true));
         configs.addKeyValuePair(new Pair<>("no_raider_friendly_fire", true));
+        configs.addKeyValuePair(new Pair<>("max_omen_level_commands", 255));
+        configs.addKeyValuePair(new Pair<>("max_omen_level_natural", 50));
     }
 
     private static void assignConfigs() {
         SCALESTATUSEFFECTS = CONFIG.getOrDefault("scale_status_effects", false);
         ACTIVEWITCHES = CONFIG.getOrDefault("active_witches", true);
+        HEALTHSTATUSEFFECTS = CONFIG.getOrDefault("health_status_effects", true);
         RAIDWAVESCALEAMOUNT = CONFIG.getOrDefault("raiders_in_wave_scale_amount", 0.2);
         TOTALWAVESCALEFACTOR = CONFIG.getOrDefault("total_wave_scale_factor", 1.2);
         SLOWWAVETIMER = CONFIG.getOrDefault("slow_wave_timer", 300);
@@ -54,6 +61,8 @@ public class ModConfigs {
         VEXESPERISHWITHEVOKERSENABLED = CONFIG.getOrDefault("vexes_perish_with_evokers_enabled", true);
         WITCHESCANTHROWLINGERINGENABLED = CONFIG.getOrDefault("witches_can_throw_lingering_enabled", true);
         NORAIDERFRIENDLYFIRE = CONFIG.getOrDefault("no_raider_friendly_fire", true);
+        MAXOMENLEVELCOMMANDS = CONFIG.getOrDefault("max_omen_level_commands", 255);
+        MAXOMENLEVELNATURAL = CONFIG.getOrDefault("max_omen_level_natural", 50);
 
         System.out.println("All " + configs.getConfigsList().size() + " have been set properly");
     }

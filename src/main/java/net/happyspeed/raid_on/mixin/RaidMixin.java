@@ -49,13 +49,13 @@ public abstract class RaidMixin {
 
     @Inject(method = "getMaxWaves", at=@At(value = "HEAD"), cancellable = true)
     public void waveLevelsScaleWavesMixin(Difficulty difficulty, CallbackInfoReturnable<Integer> cir) {
-        cir.setReturnValue(400);
+        cir.setReturnValue(800);
         cir.cancel();
     }
 
     @Inject(method = "getMaxAcceptableBadOmenLevel", at=@At(value = "HEAD"), cancellable = true)
     public void waveLevelsScalingOmen(CallbackInfoReturnable<Integer> cir) {
-        cir.setReturnValue(255);
+        cir.setReturnValue(ModConfigs.MAXOMENLEVELCOMMANDS);
         cir.cancel();
     }
 
@@ -110,13 +110,14 @@ public abstract class RaidMixin {
             else if (entity instanceof RavagerEntity) {
                 entity.setStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, StatusEffectInstance.INFINITE, 1, false, false), entity);
             }
-            if (ModConfigs.SCALESTATUSEFFECTS) {
-                entity.setStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, StatusEffectInstance.INFINITE, (int) (wave * 0.2f) + 1, false, false), entity);
-                entity.setStatusEffect(new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 40, 6, false, false), entity);
-            }
-            else {
-                entity.setStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, StatusEffectInstance.INFINITE, 1, false, false), entity);
-                entity.setStatusEffect(new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 40, 6, false, false), entity);
+            if (ModConfigs.HEALTHSTATUSEFFECTS) {
+                if (ModConfigs.SCALESTATUSEFFECTS) {
+                    entity.setStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, StatusEffectInstance.INFINITE, (int) (wave * 0.2f) + 1, false, false), entity);
+                    entity.setStatusEffect(new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 40, 6, false, false), entity);
+                } else {
+                    entity.setStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, StatusEffectInstance.INFINITE, 1, false, false), entity);
+                    entity.setStatusEffect(new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 40, 6, false, false), entity);
+                }
             }
 
             if (this.random.nextBetween(1, 4) < 2 && wave % 10 == 0) {

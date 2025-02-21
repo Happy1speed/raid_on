@@ -1,5 +1,6 @@
 package net.happyspeed.raid_on.item.custom;
 
+import net.happyspeed.raid_on.config.ModConfigs;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -45,7 +46,7 @@ public class OmenUp extends Item {
         if (!world.isClient && playerEntity != null) {
             if (user.hasStatusEffect(StatusEffects.BAD_OMEN)) {
                 int omenlevel = Objects.requireNonNull(playerEntity.getStatusEffect(StatusEffects.BAD_OMEN)).getAmplifier();
-                if (omenlevel + 1 <= 50) {
+                if (omenlevel + 1 <= ModConfigs.MAXOMENLEVELNATURAL) {
                     playerEntity.setStatusEffect(new StatusEffectInstance(StatusEffects.BAD_OMEN, 500000, omenlevel + 1), playerEntity);
                     playerEntity.getWorld().playSound(null, playerEntity.getBlockPos(), SoundEvents.ENTITY_PILLAGER_CELEBRATE, SoundCategory.PLAYERS, 1.0f, 0.7f);
                     playerEntity.sendMessage(Text.translatable("message.raid_on.bad_omen_worse").formatted(Formatting.DARK_RED).formatted(Formatting.BOLD), true);
