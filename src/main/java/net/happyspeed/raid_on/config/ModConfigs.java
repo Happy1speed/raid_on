@@ -21,6 +21,7 @@ public class ModConfigs {
     public static int MAXOMENLEVELCOMMANDS;
     public static int MAXOMENLEVELNATURAL;
     public static boolean HEALTHSTATUSEFFECTS;
+    public static boolean RAIDSTATUSEFFECTS;
 
     public static void registerConfigs() {
         configs = new ModConfigProvider();
@@ -34,6 +35,7 @@ public class ModConfigs {
     private static void createConfigs() {
         configs.addKeyValuePair(new Pair<>("scale_status_effects", false));
         configs.addKeyValuePair(new Pair<>("health_status_effects", true));
+        configs.addKeyValuePair(new Pair<>("raid_status_effects", true));
         configs.addKeyValuePair(new Pair<>("active_witches", true));
         configs.addKeyValuePair(new Pair<>("raiders_in_wave_scale_amount", 0.2));
         configs.addKeyValuePair(new Pair<>("total_wave_scale_factor", 1.2));
@@ -50,8 +52,9 @@ public class ModConfigs {
 
     private static void assignConfigs() {
         SCALESTATUSEFFECTS = CONFIG.getOrDefault("scale_status_effects", false);
-        ACTIVEWITCHES = CONFIG.getOrDefault("active_witches", true);
         HEALTHSTATUSEFFECTS = CONFIG.getOrDefault("health_status_effects", true);
+        RAIDSTATUSEFFECTS = CONFIG.getOrDefault("raid_status_effects", true);
+        ACTIVEWITCHES = CONFIG.getOrDefault("active_witches", true);
         RAIDWAVESCALEAMOUNT = CONFIG.getOrDefault("raiders_in_wave_scale_amount", 0.2);
         TOTALWAVESCALEFACTOR = CONFIG.getOrDefault("total_wave_scale_factor", 1.2);
         SLOWWAVETIMER = CONFIG.getOrDefault("slow_wave_timer", 300);

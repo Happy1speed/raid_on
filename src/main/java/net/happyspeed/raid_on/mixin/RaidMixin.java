@@ -88,40 +88,37 @@ public abstract class RaidMixin {
     @Inject(method = "addToWave(ILnet/minecraft/entity/raid/RaiderEntity;Z)Z", at=@At(value = "HEAD"), cancellable = true)
     public void raiderEffectsScale(int wave, RaiderEntity entity, boolean countHealth, CallbackInfoReturnable<Boolean> cir) {
         if (wave > 9) {
-            if (entity instanceof VindicatorEntity) {
-                if (ModConfigs.SCALESTATUSEFFECTS) {
-                    entity.setStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, StatusEffectInstance.INFINITE, (int) (wave * 0.4f), false, false), entity);
+            if (ModConfigs.RAIDSTATUSEFFECTS) {
+                if (entity instanceof VindicatorEntity) {
+                    if (ModConfigs.SCALESTATUSEFFECTS) {
+                        entity.setStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, StatusEffectInstance.INFINITE, (int) (wave * 0.4f), false, false), entity);
+                    } else {
+                        entity.setStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, StatusEffectInstance.INFINITE, 0, false, false), entity);
+                    }
+                } else if (entity instanceof PillagerEntity) {
+                    if (ModConfigs.SCALESTATUSEFFECTS) {
+                        entity.setStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, StatusEffectInstance.INFINITE, (int) Math.min(wave * 0.5f, 5), false, false), entity);
+                    } else {
+                        entity.setStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, StatusEffectInstance.INFINITE, 0, false, false), entity);
+                    }
+                } else if (entity instanceof EvokerEntity) {
+                    entity.setStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, StatusEffectInstance.INFINITE, 6, false, false), entity);
+                } else if (entity instanceof RavagerEntity) {
+                    entity.setStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, StatusEffectInstance.INFINITE, 1, false, false), entity);
                 }
-                else {
-                    entity.setStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, StatusEffectInstance.INFINITE, 0, false, false), entity);
+                if (ModConfigs.HEALTHSTATUSEFFECTS) {
+                    if (ModConfigs.SCALESTATUSEFFECTS) {
+                        entity.setStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, StatusEffectInstance.INFINITE, (int) (wave * 0.2f) + 1, false, false), entity);
+                        entity.setStatusEffect(new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 40, 6, false, false), entity);
+                    } else {
+                        entity.setStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, StatusEffectInstance.INFINITE, 1, false, false), entity);
+                        entity.setStatusEffect(new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 40, 6, false, false), entity);
+                    }
                 }
-            }
-            else if (entity instanceof PillagerEntity) {
-                if (ModConfigs.SCALESTATUSEFFECTS) {
-                    entity.setStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, StatusEffectInstance.INFINITE, (int) Math.min(wave * 0.5f, 5), false, false), entity);
-                }
-                else {
-                    entity.setStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, StatusEffectInstance.INFINITE, 0, false, false), entity);
-                }
-            }
-            else if (entity instanceof EvokerEntity) {
-                entity.setStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, StatusEffectInstance.INFINITE, 6, false, false), entity);
-            }
-            else if (entity instanceof RavagerEntity) {
-                entity.setStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, StatusEffectInstance.INFINITE, 1, false, false), entity);
-            }
-            if (ModConfigs.HEALTHSTATUSEFFECTS) {
-                if (ModConfigs.SCALESTATUSEFFECTS) {
-                    entity.setStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, StatusEffectInstance.INFINITE, (int) (wave * 0.2f) + 1, false, false), entity);
-                    entity.setStatusEffect(new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 40, 6, false, false), entity);
-                } else {
-                    entity.setStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, StatusEffectInstance.INFINITE, 1, false, false), entity);
-                    entity.setStatusEffect(new StatusEffectInstance(StatusEffects.INSTANT_HEALTH, 40, 6, false, false), entity);
-                }
-            }
 
-            if (this.random.nextBetween(1, 4) < 2 && wave % 10 == 0) {
-                entity.setStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, StatusEffectInstance.INFINITE, 1, false, false), entity);
+                if (this.random.nextBetween(1, 4) < 2 && wave % 10 == 0) {
+                    entity.setStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, StatusEffectInstance.INFINITE, 1, false, false), entity);
+                }
             }
         }
         entity.setStatusEffect(new StatusEffectInstance(RaidonMod.RAID_WAVE_LOOT_EFFECT, StatusEffectInstance.INFINITE, wave, false, false), entity);
