@@ -9,6 +9,7 @@
     "PlayerEntityMixin",
     "RaiderEntityMixin",
     "RaidMixin",
+    "VexMixin",
     "WitchEntityMixin"
   ],
   "injectors": {

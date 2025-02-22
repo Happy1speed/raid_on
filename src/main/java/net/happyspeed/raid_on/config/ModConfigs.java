@@ -17,6 +17,7 @@ public class ModConfigs {
     public static boolean PILLAGERFIREWORKSENABLED;
     public static boolean PILLAGERLARGERVIEWRANGE;
     public static boolean VEXESPERISHWITHEVOKERSENABLED;
+    public static boolean REMOVEVEXMELEEWEAPON;
     public static boolean WITCHESCANTHROWLINGERINGENABLED;
     public static boolean NORAIDERFRIENDLYFIRE;
     public static int MAXOMENLEVELCOMMANDS;
@@ -46,6 +47,7 @@ public class ModConfigs {
         configs.addKeyValuePair(new Pair<>("pillager_fireworks_enabled", true));
         configs.addKeyValuePair(new Pair<>("pillager_larger_view_range", true));
         configs.addKeyValuePair(new Pair<>("vexes_perish_with_evokers_enabled", true));
+        configs.addKeyValuePair(new Pair<>("remove_vex_melee_weapon", false));
         configs.addKeyValuePair(new Pair<>("witches_can_throw_lingering_enabled", true));
         configs.addKeyValuePair(new Pair<>("no_raider_friendly_fire", true));
         configs.addKeyValuePair(new Pair<>("max_omen_level_commands", 255));
@@ -65,6 +67,7 @@ public class ModConfigs {
         PILLAGERFIREWORKSENABLED = CONFIG.getOrDefault("pillager_fireworks_enabled", true);
         PILLAGERLARGERVIEWRANGE = CONFIG.getOrDefault("pillager_larger_view_range", true);
         VEXESPERISHWITHEVOKERSENABLED = CONFIG.getOrDefault("vexes_perish_with_evokers_enabled", true);
+        REMOVEVEXMELEEWEAPON = CONFIG.getOrDefault("remove_vex_melee_weapon", false);
         WITCHESCANTHROWLINGERINGENABLED = CONFIG.getOrDefault("witches_can_throw_lingering_enabled", true);
         NORAIDERFRIENDLYFIRE = CONFIG.getOrDefault("no_raider_friendly_fire", true);
         MAXOMENLEVELCOMMANDS = CONFIG.getOrDefault("max_omen_level_commands", 255);
