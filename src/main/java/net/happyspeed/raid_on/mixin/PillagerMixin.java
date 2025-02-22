@@ -2,28 +2,17 @@ package net.happyspeed.raid_on.mixin;
 
 import com.google.common.collect.Lists;
 import net.happyspeed.raid_on.config.ModConfigs;
-import net.minecraft.client.particle.FireworksSparkParticle;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.mob.IllagerEntity;
 import net.minecraft.entity.mob.PillagerEntity;
-import net.minecraft.entity.mob.WitchEntity;
 import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.FireballEntity;
-import net.minecraft.entity.projectile.FireworkRocketEntity;
-import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.FireworkRocketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.loot.LootTable;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.recipe.FireworkRocketRecipe;
-import net.minecraft.recipe.FireworkStarFadeRecipe;
-import net.minecraft.recipe.FireworkStarRecipe;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.random.Random;
@@ -50,7 +39,7 @@ public abstract class PillagerMixin extends IllagerEntity
 
     @Inject(method = "initEquipment", at=@At(value = "HEAD"), cancellable = true)
     public void fireworkRandomize(Random random, LocalDifficulty localDifficulty, CallbackInfo ci) {
-        if (random.nextBetween(1, ModConfigs.PILLAGERFIREWORKSCHANCE) == 1 && ModConfigs.PILLAGERSFIREWORKSENABLED) {
+        if (random.nextBetween(1, ModConfigs.PILLAGERFIREWORKSCHANCE) == 1 && ModConfigs.PILLAGERFIREWORKSENABLED) {
             int flight = random.nextBetween(1, 3);
             ItemStack itemStack = new ItemStack(Items.FIREWORK_ROCKET, 64);
 
@@ -119,27 +108,39 @@ public abstract class PillagerMixin extends IllagerEntity
 
     @ModifyConstant(method = "createPillagerAttributes", constant = @Constant(doubleValue = 32, ordinal = 0))
     private static double rangeExtentionMixin2(double constant) {
-        return 48.0;
+        if (ModConfigs.PILLAGERLARGERVIEWRANGE) {
+            return 48.0;
+        }
+        return constant;
     }
 
     @ModifyConstant(method = "initGoals", constant = @Constant(floatValue = 8.0f, ordinal = 0))
     private float rangeExtentionMixin(float constant) {
-        return 20;
+        if (ModConfigs.PILLAGERLARGERVIEWRANGE) {
+            return 20;
+        }
+        return constant;
     }
 
     @ModifyConstant(method = "initGoals", constant = @Constant(floatValue = 15.0f, ordinal = 0))
     private float rangeExtentionMixin2(float constant) {
-        return 25;
+        if (ModConfigs.PILLAGERLARGERVIEWRANGE) {
+            return 25;
+        }
+        return constant;
     }
 
     @ModifyConstant(method = "initGoals", constant = @Constant(floatValue = 15.0f, ordinal = 1))
     private float rangeExtentionMixin3(float constant) {
-        return 25;
+        if (ModConfigs.PILLAGERLARGERVIEWRANGE) {
+            return 25;
+        }
+        return constant;
     }
 
     @ModifyConstant(method = "attack", constant = @Constant(floatValue = 1.6f, ordinal = 0))
     private float rangeExtentionMixinspeed(float constant) {
-        if (this.raid != null) {
+        if (this.raid != null && ModConfigs.PILLAGERLARGERVIEWRANGE) {
             if (this.raid.waveCount > 16) {
                 return 3.0f;
             }
