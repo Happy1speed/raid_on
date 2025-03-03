@@ -14,6 +14,7 @@ import net.minecraft.entity.raid.RaiderEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.village.raid.Raid;
+import net.minecraft.village.raid.RaidManager;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.World;
@@ -127,14 +128,11 @@ public abstract class RaidMixin {
     @Inject(method = "getBonusCount", at=@At(value = "HEAD"), cancellable = true)
     public void getMoreRaiders(Raid.Member member, Random random, int wave, LocalDifficulty localDifficulty, boolean extra, CallbackInfoReturnable<Integer> cir) {
         int i = 0;
-
         if (this.wavesSpawned > 5) {
             i = (int) (this.wavesSpawned * (float) (ModConfigs.RAIDWAVESCALEAMOUNT));
-            Difficulty difficulty = localDifficulty.getGlobalDifficulty();
-            boolean bl = difficulty == Difficulty.EASY;
             switch (member) {
                 case WITCH: {
-                    if (!bl && wave % 4 == 0) {
+                    if (wave % 4 == 0) {
                         i = random.nextBetween(i, i + 10);
                         break;
                     }
@@ -156,7 +154,7 @@ public abstract class RaidMixin {
                     }
                     break;
                 case VINDICATOR: {
-                    if (!bl && wave % 3 == 0) {
+                    if (wave % 3 == 0) {
                         i = random.nextBetween(i, i + 10);
                         break;
                     }
@@ -168,12 +166,12 @@ public abstract class RaidMixin {
                 }
                 case RAVAGER: {
                     if ((wave % 5 == 0 || wave % 7 == 0) && wave > 6) {
-                        i = !bl && extra ? random.nextBetween(i, i + 1) : 0;
+                        i = extra ? random.nextBetween(i, i + 1) : 0;
                     }
                     break;
                 }
                 case EVOKER: {
-                    if (!bl && wave % 5 == 0) {
+                    if (wave % 5 == 0) {
                         i = random.nextBetween((int) (1 + i * 0.1f), (int) (1 + i * 0.3f));
                         break;
                     }
@@ -199,12 +197,16 @@ public abstract class RaidMixin {
 
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/boss/ServerBossBar;setName(Lnet/minecraft/text/Text;)V", ordinal = 2))
     public void waveDisplay1(ServerBossBar instance, Text name) {
-        this.bar.setName(EVENT_TEXT.copy().append(" | ").append(Text.translatable("event.raid_on.show_waves_remaining", new Object[]{this.wavesSpawned})));
+        if (this.wavesSpawned != 0) {
+            this.bar.setName(EVENT_TEXT.copy().append(" | ").append(Text.translatable("event.raid_on.show_waves_remaining", new Object[]{this.wavesSpawned})));
+        }
     }
 
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/boss/ServerBossBar;setName(Lnet/minecraft/text/Text;)V", ordinal = 3))
     public void waveDisplay3(ServerBossBar instance, Text name) {
-        this.bar.setName(EVENT_TEXT.copy().append(" | ").append(Text.translatable("event.raid_on.show_waves_remaining", new Object[]{this.wavesSpawned})));
+        if (this.wavesSpawned != 0) {
+            this.bar.setName(EVENT_TEXT.copy().append(" | ").append(Text.translatable("event.raid_on.show_waves_remaining", new Object[]{this.wavesSpawned})));
+        }
     }
 
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/boss/ServerBossBar;setName(Lnet/minecraft/text/Text;)V", ordinal = 1))
@@ -219,39 +221,44 @@ public abstract class RaidMixin {
         this.bar.setName(EVENT_TEXT.copy().append(" - ").append(Text.translatable("event.minecraft.raid.raiders_remaining", new Object[]{i})).append(" | ").append(Text.translatable("event.raid_on.show_waves_remaining", new Object[]{this.wavesSpawned})));
     }
 
+    @ModifyConstant(method = "tick", constant = @Constant(intValue = 2, ordinal = 1))
+    private int modifyDisplayRaiderCount(int constant) {
+        return (int) (this.wavesSpawned * 1.2f) + 2;
+    }
+
     @ModifyConstant(method = "tick", constant = @Constant(intValue = 300, ordinal = 0))
     private int modifyraidtime2(int constant) {
-        return this.wavesSpawned > 5 ? ModConfigs.FASTWAVETIMER : ModConfigs.SLOWWAVETIMER;
+        return this.wavesSpawned >= 5 ? ModConfigs.FASTWAVETIMER : ModConfigs.SLOWWAVETIMER;
     }
 
     @ModifyConstant(method = "tick", constant = @Constant(intValue = 100, ordinal = 0))
     private int modifyraidtime3(int constant) {
-        return this.wavesSpawned > 5 ? (int) (ModConfigs.FASTWAVETIMER * 0.3f) : (int) (ModConfigs.SLOWWAVETIMER * 0.3f);
+        return this.wavesSpawned >= 5 ? (int) (ModConfigs.FASTWAVETIMER * 0.3f) : (int) (ModConfigs.SLOWWAVETIMER * 0.3f);
     }
 
     @ModifyConstant(method = "tick", constant = @Constant(intValue = 40, ordinal = 0))
     private int modifyraidtime4(int constant) {
-        return this.wavesSpawned > 5 ? (int) (ModConfigs.FASTWAVETIMER * 0.13f) : (int) (ModConfigs.SLOWWAVETIMER * 0.13f);
+        return this.wavesSpawned >= 5 ? (int) (ModConfigs.FASTWAVETIMER * 0.13f) : (int) (ModConfigs.SLOWWAVETIMER * 0.13f);
     }
 
     @ModifyConstant(method = "tick", constant = @Constant(intValue = 300, ordinal = 1))
     private int modifyraidtime5(int constant) {
-        return this.wavesSpawned > 5 ? ModConfigs.FASTWAVETIMER : ModConfigs.SLOWWAVETIMER;
+        return this.wavesSpawned >= 5 ? ModConfigs.FASTWAVETIMER : ModConfigs.SLOWWAVETIMER;
     }
 
     @ModifyConstant(method = "tick", constant = @Constant(intValue = 300, ordinal = 2))
     private int modifyraidtime6(int constant) {
-        return this.wavesSpawned > 5 ? ModConfigs.FASTWAVETIMER : ModConfigs.SLOWWAVETIMER;
+        return this.wavesSpawned >= 5 ? ModConfigs.FASTWAVETIMER : ModConfigs.SLOWWAVETIMER;
     }
 
     @ModifyConstant(method = "tick", constant = @Constant(floatValue = 300f, ordinal = 0))
     private float modifyraidtime7(float constant) {
-        return this.wavesSpawned > 5 ? (float) ModConfigs.FASTWAVETIMER : (float) ModConfigs.SLOWWAVETIMER;
+        return this.wavesSpawned >= 5 ? (float) ModConfigs.FASTWAVETIMER : (float) ModConfigs.SLOWWAVETIMER;
     }
 
     @ModifyConstant(method = "tick", constant = @Constant(longValue = 48000L, ordinal = 0))
     private long modifyraidMaxTime(long constant) {
-        return (long) ((48000L * this.getMaxWaves(this.getWorld().getDifficulty()) - 2) * 0.5f);
+        return (12000L * this.waveCount);
     }
 
 

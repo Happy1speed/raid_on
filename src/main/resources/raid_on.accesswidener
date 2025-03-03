@@ -6,3 +6,5 @@ accessible field net/minecraft/village/raid/Raid waveCount I
 accessible method net/minecraft/village/raid/Raid hasExtraWave ()Z
 accessible class net/minecraft/entity/mob/SpellcastingIllagerEntity$CastSpellGoal
 accessible field net/minecraft/village/raid/Raid wavesSpawned I
+accessible field net/minecraft/village/raid/Raid ticksActive J
+accessible field net/minecraft/entity/Entity random Lnet/minecraft/util/math/random/Random;

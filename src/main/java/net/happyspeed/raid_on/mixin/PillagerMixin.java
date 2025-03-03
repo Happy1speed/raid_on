@@ -103,6 +103,7 @@ public abstract class PillagerMixin extends IllagerEntity
                 nbtCompound2first.put("Explosions", nbtList);
             }
             this.equipStack(EquipmentSlot.OFFHAND, itemStack);
+            this.setEquipmentDropChance(EquipmentSlot.OFFHAND, 0.0F);
         }
     }
 
