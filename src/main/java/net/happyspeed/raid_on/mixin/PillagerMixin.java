@@ -1,7 +1,12 @@
 package net.happyspeed.raid_on.mixin;
 
 import com.google.common.collect.Lists;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import net.happyspeed.raid_on.config.ModConfigs;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.FireworkExplosionComponent;
+import net.minecraft.component.type.FireworksComponent;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.mob.IllagerEntity;
@@ -16,6 +21,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.village.raid.Raid;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,6 +30,7 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Mixin(PillagerEntity.class)
 public abstract class PillagerMixin extends IllagerEntity
@@ -40,70 +47,68 @@ public abstract class PillagerMixin extends IllagerEntity
     @Inject(method = "initEquipment", at=@At(value = "HEAD"), cancellable = true)
     public void fireworkRandomize(Random random, LocalDifficulty localDifficulty, CallbackInfo ci) {
         if (random.nextBetween(1, ModConfigs.PILLAGERFIREWORKSCHANCE) == 1 && ModConfigs.PILLAGERFIREWORKSENABLED) {
+            //Random Flight Durration
             int flight = random.nextBetween(1, 3);
-            ItemStack itemStack = new ItemStack(Items.FIREWORK_ROCKET, 64);
 
-            int howMany = random.nextBetween(1, 4);
-            int howManyStars = random.nextBetween(1, 3);
+            int howMany = random.nextBetween(2, 7);
+            //Random amount of Stars
             if (this.getWave() > 20) {
-                howMany += 1;
-                howManyStars += 2;
+                howMany += 2;
             }
             if (this.getWave() > 40) {
-                howMany += 1;
-                howManyStars += 1;
+                howMany += 3;
             }
-            NbtList nbtList = new NbtList();
-            NbtCompound nbtCompound2first = itemStack.getOrCreateSubNbt("Fireworks");
-            for (int k = 0; k < howManyStars; k++) {
-                ItemStack itemStack2 = new ItemStack(Items.FIREWORK_STAR);
-
-                for (int i = 0; i < howMany; i++) {
-                    NbtCompound nbtCompound = itemStack2.getOrCreateSubNbt("Explosion");
-
-                    ArrayList<Integer> list = Lists.newArrayList();
-                    DyeColor color = Util.getRandom(DyeColor.values(), random);
-                    list.add(color.getFireworkColor());
-                    nbtCompound.putIntArray("Colors", list);
-
-                    int superChoose = random.nextBetween(1, 5);
-                    if (superChoose == 1) {
-                        nbtCompound.putByte("Type", (byte) FireworkRocketItem.Type.BURST.getId());
-                    } else if (superChoose == 2) {
-                        nbtCompound.putByte("Type", (byte) FireworkRocketItem.Type.CREEPER.getId());
-                    } else if (superChoose == 3) {
-                        nbtCompound.putByte("Type", (byte) FireworkRocketItem.Type.STAR.getId());
-                    } else if (superChoose == 4) {
-                        nbtCompound.putByte("Type", (byte) FireworkRocketItem.Type.LARGE_BALL.getId());
-                    } else if (superChoose == 5) {
-                        nbtCompound.putByte("Type", (byte) FireworkRocketItem.Type.SMALL_BALL.getId());
-                    }
-
-                    int fadeortwinkle = random.nextBetween(1, 10);
-
-                    if (!list.isEmpty() && fadeortwinkle < 3) {
-                        itemStack.getOrCreateSubNbt("Explosion").putIntArray("FadeColors", list);
-                    }
-
-                    if (!list.isEmpty() && fadeortwinkle > 7) {
-                        nbtCompound.putBoolean("Flicker", true);
-                    }
+            //Increment Stars based on Factors
 
 
-                    nbtList.add(nbtCompound);
+            //Firework Creation
+            List<FireworkExplosionComponent> Explosionslist = new ArrayList();
+            for (int i = 0; i < howMany; i++) {
+                FireworkExplosionComponent.Type type = FireworkExplosionComponent.Type.SMALL_BALL;
+                boolean twinkle = false;
+                //Loop Star Explosions
+
+                IntList intList = new IntArrayList();
+                IntList intList2 = new IntArrayList();
+                //Random Dye Color
+                DyeColor color = Util.getRandom(DyeColor.values(), random);
+                intList.add(color.getFireworkColor());
+
+                //Random Star Shape
+
+                int superChoose = random.nextBetween(1, 5);
+                if (superChoose == 1) {
+                    type = FireworkExplosionComponent.Type.BURST;
+                } else if (superChoose == 2) {
+                    type = FireworkExplosionComponent.Type.CREEPER;
+                } else if (superChoose == 3) {
+                    type = FireworkExplosionComponent.Type.STAR;
+                } else if (superChoose == 4) {
+                    type = FireworkExplosionComponent.Type.LARGE_BALL;
                 }
 
-                NbtCompound nbtCompound3 = itemStack2.getSubNbt("Explosion");
-                if (nbtCompound3 != null) {
-                    nbtList.add(nbtCompound3);
+
+                //Trail or Twinkle
+                int Doestwinkle = random.nextBetween(1, 5);
+
+                if (Doestwinkle < 2) {
+                    twinkle = true;
                 }
+
+                if (random.nextBetween(1, 2) < 2) {
+                    DyeColor colorFade = Util.getRandom(DyeColor.values(), random);
+                    intList2.add(colorFade.getFireworkColor());
+                }
+
+                Explosionslist.add(new FireworkExplosionComponent(type, intList, intList2, false, twinkle));
             }
-            nbtCompound2first.putByte("Flight", (byte) flight);
-            if (!nbtList.isEmpty()) {
-                nbtCompound2first.put("Explosions", nbtList);
-            }
+
+            ItemStack itemStack = new ItemStack(Items.FIREWORK_ROCKET, 64);
+            itemStack.set(DataComponentTypes.FIREWORKS, new FireworksComponent(flight, Explosionslist));
+
+            //Equip Stack
             this.equipStack(EquipmentSlot.OFFHAND, itemStack);
-            this.setEquipmentDropChance(EquipmentSlot.OFFHAND, 0.0F);
+            this.setEquipmentDropChance(EquipmentSlot.OFFHAND, 0.0f);
         }
     }
 
@@ -139,8 +144,8 @@ public abstract class PillagerMixin extends IllagerEntity
         return constant;
     }
 
-    @ModifyConstant(method = "attack", constant = @Constant(floatValue = 1.6f, ordinal = 0))
-    private float rangeExtentionMixinspeed(float constant) {
+    @ModifyConstant(method = "shootAt", constant = @Constant(floatValue = 1.6F, ordinal = 0))
+    private float reAim(float constant) {
         if (this.raid != null && ModConfigs.PILLAGERLARGERVIEWRANGE) {
             if (this.raid.waveCount > 16) {
                 return 3.0f;

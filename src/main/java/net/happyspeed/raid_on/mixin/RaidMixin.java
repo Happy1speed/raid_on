@@ -11,6 +11,7 @@ import net.minecraft.entity.mob.RavagerEntity;
 import net.minecraft.entity.mob.VindicatorEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.raid.RaiderEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.village.raid.Raid;
@@ -61,7 +62,7 @@ public abstract class RaidMixin {
     }
 
     @Inject(method = "start", at=@At(value = "TAIL"))
-    public void waveLevelsScaleMixin2(PlayerEntity player, CallbackInfo ci) {
+    public void waveLevelsScaleMixin2(ServerPlayerEntity serverPlayerEntity, CallbackInfoReturnable<Boolean> cir) {
         if (this.getWorld().getDifficulty() == Difficulty.PEACEFUL) {
             this.waveCount = 0;
         }

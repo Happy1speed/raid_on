@@ -1,6 +1,5 @@
 package net.happyspeed.raid_on.item;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.happyspeed.raid_on.RaidonMod;
@@ -17,13 +16,13 @@ import net.minecraft.util.Identifier;
 public class ModItems {
 
     public static final Item PRISMOFSIGHT = registerItem("prism_of_sight",
-            new SightPrism(new FabricItemSettings().maxCount(1)));
+            new SightPrism(new Item.Settings().maxCount(1)));
 
     public static final Item BOTTLEOOMEN = registerItem("bottle_o_omen",
-            new OmenUp(new FabricItemSettings().maxCount(64)));
+            new OmenUp(new Item.Settings().maxCount(64)));
 
     public static final Item RAID_RUNE = registerItem("raid_rune",
-            new RaidOMeter(new FabricItemSettings().maxCount(1)));
+            new RaidOMeter(new Item.Settings().maxCount(1)));
 
 
     private static void addItemsToIngredientItemGroup(FabricItemGroupEntries entries) {
@@ -31,7 +30,7 @@ public class ModItems {
     }
 
     private static Item registerItem(String name, Item item) {
-        return Registry.register(Registries.ITEM, new Identifier(RaidonMod.MOD_ID, name), item);
+        return Registry.register(Registries.ITEM, Identifier.of(RaidonMod.MOD_ID, name), item);
     }
 
     public static void registerModItems() {

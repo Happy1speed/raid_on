@@ -11,7 +11,7 @@ import net.minecraft.util.Identifier;
 
 public class ModItemGroups {
     public static final ItemGroup RAIDON_ITEM_GROUP = Registry.register(Registries.ITEM_GROUP,
-            new Identifier(RaidonMod.MOD_ID, "raidon"),
+            Identifier.of(RaidonMod.MOD_ID, "raidon"),
             FabricItemGroup.builder().displayName(Text.translatable("itemgroup.raidon"))
                     .icon(() -> new ItemStack(ModItems.PRISMOFSIGHT)).entries((displayContext, entries) -> {
                         entries.add(ModItems.PRISMOFSIGHT);

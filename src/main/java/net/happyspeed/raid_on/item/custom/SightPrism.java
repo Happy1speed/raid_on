@@ -4,7 +4,6 @@ import com.google.common.collect.Sets;
 import net.happyspeed.raid_on.mixin.PlayerEntityMixin;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;

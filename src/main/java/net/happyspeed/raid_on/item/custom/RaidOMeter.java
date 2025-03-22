@@ -1,8 +1,6 @@
 package net.happyspeed.raid_on.item.custom;
 
 import com.google.common.collect.Lists;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.client.item.TooltipData;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
