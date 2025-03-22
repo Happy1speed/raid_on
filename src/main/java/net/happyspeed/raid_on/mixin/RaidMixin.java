@@ -49,6 +49,12 @@ public abstract class RaidMixin {
 
     @Shadow protected abstract boolean hasExtraWave();
 
+    @Shadow protected abstract void updateBarToPlayers();
+
+    @Shadow public abstract boolean hasStopped();
+
+    @Shadow private Raid.Status status;
+
     @Inject(method = "getMaxWaves", at=@At(value = "HEAD"), cancellable = true)
     public void waveLevelsScaleWavesMixin(Difficulty difficulty, CallbackInfoReturnable<Integer> cir) {
         cir.setReturnValue(800);
@@ -220,6 +226,15 @@ public abstract class RaidMixin {
         }
         int i = this.getRaiderCount();
         this.bar.setName(EVENT_TEXT.copy().append(" - ").append(Text.translatable("event.minecraft.raid.raiders_remaining", new Object[]{i})).append(" | ").append(Text.translatable("event.raid_on.show_waves_remaining", new Object[]{this.wavesSpawned})));
+    }
+
+    @Inject(method = "tick", at=@At("HEAD"))
+    private void fixBarUpdate(CallbackInfo ci) {
+        if (!this.hasStopped()) {
+            if (this.status == Raid.Status.ONGOING) {
+                updateBarToPlayers();
+            }
+        }
     }
 
     @ModifyConstant(method = "tick", constant = @Constant(intValue = 2, ordinal = 1))
