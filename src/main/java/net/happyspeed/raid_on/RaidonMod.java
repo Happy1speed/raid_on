@@ -122,6 +122,7 @@ public class RaidonMod implements ModInitializer {
 								for (RaiderEntity raiderEntity : raid.getAllRaiders()) {
 									raid.removeFromWave(raiderEntity, true);
 									raiderEntity.kill();
+									raid.updateBar();
 								}
 								context.getSource().sendFeedback(() -> Text.translatable("commands.raid_on.raid_killed_raiders"), false);
 								return 1;
@@ -143,6 +144,7 @@ public class RaidonMod implements ModInitializer {
 								for (RaiderEntity raiderEntity : raid.getAllRaiders()) {
 									raid.removeFromWave(raiderEntity, true);
 									raiderEntity.discard();
+									raid.updateBar();
 								}
 								context.getSource().sendFeedback(() -> Text.translatable("commands.raid_on.raid_despawned_raiders"), false);
 								return 1;
@@ -164,6 +166,7 @@ public class RaidonMod implements ModInitializer {
 								for (RaiderEntity raiderEntity : raid.getAllRaiders()) {
 									raid.removeFromWave(raiderEntity, true);
 									raiderEntity.kill();
+									raid.updateBar();
 								}
 								context.getSource().sendFeedback(() -> Text.translatable("commands.raid_on.raid_killed_raiders"), false);
 
@@ -189,6 +192,7 @@ public class RaidonMod implements ModInitializer {
 								for (RaiderEntity raiderEntity : raid.getAllRaiders()) {
 									raid.removeFromWave(raiderEntity, true);
 									raiderEntity.discard();
+									raid.updateBar();
 								}
 								context.getSource().sendFeedback(() -> Text.translatable("commands.raid_on.raid_despawned_raiders"), false);
 
