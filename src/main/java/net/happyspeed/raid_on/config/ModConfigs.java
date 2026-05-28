@@ -11,6 +11,8 @@ public class ModConfigs {
     public static boolean ACTIVEWITCHES;
     public static double RAIDWAVESCALEAMOUNT;
     public static double TOTALWAVESCALEFACTOR;
+    public static double WAVESTARTSCALEFACTOR;
+    public static boolean SCALEWAVESIMMEDIATELY;
     public static int SLOWWAVETIMER;
     public static int FASTWAVETIMER;
     public static int PILLAGERFIREWORKSCHANCE;
@@ -41,6 +43,8 @@ public class ModConfigs {
         configs.addKeyValuePair(new Pair<>("active_witches", true));
         configs.addKeyValuePair(new Pair<>("raiders_in_wave_scale_amount", 0.2));
         configs.addKeyValuePair(new Pair<>("total_wave_scale_factor", 1.2));
+        configs.addKeyValuePair(new Pair<>("wave_scale_start_factor", 0.0));
+        configs.addKeyValuePair(new Pair<>("waves_scale_immediately", false));
         configs.addKeyValuePair(new Pair<>("slow_wave_timer", 300));
         configs.addKeyValuePair(new Pair<>("fast_wave_timer", 20));
         configs.addKeyValuePair(new Pair<>("pillager_fireworks_chance", 10));
@@ -61,6 +65,8 @@ public class ModConfigs {
         ACTIVEWITCHES = CONFIG.getOrDefault("active_witches", true);
         RAIDWAVESCALEAMOUNT = CONFIG.getOrDefault("raiders_in_wave_scale_amount", 0.2);
         TOTALWAVESCALEFACTOR = CONFIG.getOrDefault("total_wave_scale_factor", 1.2);
+        WAVESTARTSCALEFACTOR = CONFIG.getOrDefault("wave_scale_start_factor", 0.0);
+        SCALEWAVESIMMEDIATELY = CONFIG.getOrDefault("waves_scale_immediately", false);
         SLOWWAVETIMER = CONFIG.getOrDefault("slow_wave_timer", 300);
         FASTWAVETIMER = CONFIG.getOrDefault("fast_wave_timer", 20);
         PILLAGERFIREWORKSCHANCE = CONFIG.getOrDefault("pillager_fireworks_chance", 10);
