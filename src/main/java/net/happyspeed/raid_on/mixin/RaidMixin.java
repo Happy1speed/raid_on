@@ -128,8 +128,8 @@ public abstract class RaidMixin {
     @Inject(method = "getBonusCount", at=@At(value = "HEAD"), cancellable = true)
     public void getMoreRaiders(Raid.Member member, Random random, int wave, LocalDifficulty localDifficulty, boolean extra, CallbackInfoReturnable<Integer> cir) {
         int i = 0;
-        if (this.wavesSpawned > 5) {
-            i = (int) (this.wavesSpawned * (float) (ModConfigs.RAIDWAVESCALEAMOUNT));
+        if (this.wavesSpawned > 5 || ModConfigs.SCALEWAVESIMMEDIATELY) {
+            i = (int) (i + ModConfigs.WAVESTARTSCALEFACTOR + (this.wavesSpawned * (float) (ModConfigs.RAIDWAVESCALEAMOUNT)));
             switch (member) {
                 case WITCH: {
                     if (wave % 4 == 0) {
